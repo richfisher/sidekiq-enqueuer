@@ -1,0 +1,32 @@
+<h3>Enqueuer</h3>
+
+<form method="post" action="<%= root_path %>enqueuer">
+	<%= csrf_tag if respond_to?(:csrf_tag) %>
+	
+	<div class="form-group">
+		<label for="job_class_name">Job Class/Module</label>
+		<input class="form-control" name="job_class_name" value="<%= @klass %>" readonly=readonly /> 
+	</div>
+
+	<% for param in get_job_perform_params(@klass) %>
+		<div class="form-group">
+			<label for="peform[<%= param %>]"><%= param %></label>
+			<input class="form-control" name="perform[<%= param %>]" /> 
+		</div>
+	<% end %>
+
+	<div class="form-group">
+		<input type="submit" class="btn btn-danger" name="submit" value="Enqueue" />
+	</div>
+
+	<div class="form-group">
+		<hr />
+	</div>
+
+	<div class="form-group">
+		<label for="enqueue_in">Enqueue in</label>
+		<input class="form-control" name="enqueue_in" placeholder="x seconds" /> 
+	</div>
+
+	<input type="submit" class="btn btn-danger" name="submit" value="Schedule" />
+</form>

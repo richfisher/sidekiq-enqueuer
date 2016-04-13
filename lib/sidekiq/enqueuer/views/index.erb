@@ -1,0 +1,20 @@
+<h3>Enqueuer</h3>
+
+<table class="table table-hover table-bordered table-striped table-white">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Params</th>
+			<th>Actions</th>
+		</tr>		
+	</thead>
+	<tbody>
+		<% for job in @jobs %>
+			<tr>
+				<td><%= job %></td>
+				<td><%= get_job_perform_params(job).join(', ') %></td>
+				<td><a href="<%= root_path %>enqueuer/<%= job %>" class="btn btn-danger btn-xs" style="color: white;">Enqueue Form</a></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
