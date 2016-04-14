@@ -5,11 +5,9 @@ require 'sidekiq/enqueuer/railtie' if defined? ::Rails::Railtie
 
 module Sidekiq
   module Enqueuer
-    def self.eager_load
-      has_eager_loaded = false
-      if defined?(::Rails) && ::Rails.env != 'production' && has_eager_loaded == false
+    def self.rails_eager_load
+      if defined?(::Rails) && ::Rails.env != 'production'
         ::Rails.application.eager_load! 
-        has_eager_loaded = true
       end
     end
 
@@ -24,9 +22,11 @@ module Sidekiq
     end
 
     def self.get_jobs
-      eager_load
+      return @jobs if @jobs
+
+      rails_eager_load
       jobs = get_job_modules + get_job_classes
-      jobs.map(&:to_s).uniq.map(&:constantize)
+      @jobs = jobs.map(&:to_s).uniq.map(&:constantize)
     end
 
     def self.is_job_class?(klass)
