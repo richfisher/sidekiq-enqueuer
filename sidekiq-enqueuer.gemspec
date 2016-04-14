@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["richfisher"]
   spec.email         = ["richfisher.pan@gmail.com"]
 
-  spec.summary       = %q{A Sidekiq Web extension to enqueue/schedule job in Web UI.}
-  spec.description   = %q{A Sidekiq Web extension to enqueue/schedule job in Web UI. Support both Sidekiq::Worker and ActiveJob.}
+  spec.summary       = %q{A Sidekiq Web extension to enqueue/schedule jobs with custom perform params in Web UI.}
+  spec.description   = %q{A Sidekiq Web extension to enqueue/schedule jobs with custom perform params in Web UI. Support both Sidekiq::Worker and ActiveJob.}
   spec.homepage      = "https://github.com/richfisher/sidekiq-enqueuer"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
