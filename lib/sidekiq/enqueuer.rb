@@ -40,20 +40,36 @@ module Sidekiq
     end
 
     def self.perform_async(klass, values)
+      parsed_values = values_parser(values)
       if is_job_class?(klass)
-        klass.perform_later(*values)
+        klass.perform_later(*parsed_values)
       elsif has_worker_module?(klass)
-        klass.perform_async(*values)
+        klass.perform_async(*parsed_values)
       end
     end
 
     def self.perform_in(klass, seconds_str, values)
+      parsed_values = values_parser(values)
       seconds = seconds_str.to_i.seconds
       if is_job_class?(klass)
-        klass.set(wait: seconds).perform_later(*values)
+        klass.set(wait: seconds).perform_later(*parsed_values)
       elsif has_worker_module?(klass)
-        klass.perform_in(seconds, *values)
+        klass.perform_in(seconds, *parsed_values)
       end
+    end
+
+    def self.values_parser(values)
+      parsed_values = []
+      errors = []
+      for value in values.map(&:strip)
+        if value =~ /^{/
+          parsed_values << YAML.load(value) rescue errors << value
+        else
+          parsed_values << value
+        end
+      end
+      raise errors if errors.size > 0
+      parsed_values
     end
 
   end

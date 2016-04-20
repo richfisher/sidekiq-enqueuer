@@ -66,5 +66,19 @@ module Sidekiq
       assert_equal 120, (ss.first.at - Time.now).ceil
     end
 
+    it "values_parser, should strip value" do
+      values = [' a ', 'b']
+      parsed_values = Sidekiq::Enqueuer.values_parser(values)
+
+      assert_equal ['a', 'b'], parsed_values
+    end
+
+    it "values_parser, should parse hash" do
+      values = [' {k1: v1, k2: v2}', 'b']
+      parsed_values = Sidekiq::Enqueuer.values_parser(values)
+
+      assert_equal [{'k1'=> 'v1', 'k2'=> 'v2'}, 'b'], parsed_values
+    end
+
   end
 end
