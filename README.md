@@ -32,7 +32,7 @@ Or install it yourself as:
 * That is it!
 
 ## Form filling
-* Support string value and hash value.
+* Support string value and hash value. Value will be stripped.
 * Start with { will be parsed by YAML as hash, eg: {k1: v1, k2: v2} to {'k1'=> 'v1', 'k2'=> 'v2'}
 
 
