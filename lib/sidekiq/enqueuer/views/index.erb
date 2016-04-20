@@ -11,9 +11,9 @@
 	<tbody>
 		<% for job in @jobs %>
 			<tr>
-				<td><%= job %></td>
-				<td><%= get_job_perform_params(job).join(', ') %></td>
-				<td><a href="<%= root_path %>enqueuer/<%= job %>" class="btn btn-danger btn-xs" style="color: white;">Enqueue Form</a></td>
+				<td width="40%"><%= job %></td>
+				<td width="40%"><%= get_job_perform_params(job).join(', ') %></td>
+				<td width="20%"><a href="<%= root_path %>enqueuer/<%= job %>" class="btn btn-danger btn-xs" style="color: white;">Enqueue Form</a></td>
 			</tr>
 		<% end %>
 	</tbody>
