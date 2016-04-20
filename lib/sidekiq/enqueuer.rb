@@ -30,6 +30,8 @@ module Sidekiq
     end
 
     def self.is_job_class?(klass)
+      return false if !defined?(::ActiveJob)
+
       klass < ::ActiveJob::Base
     end
 
