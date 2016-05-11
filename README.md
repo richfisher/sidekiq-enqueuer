@@ -14,9 +14,13 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
 
-    $ gem install sidekiq-enqueuer
+Edit config/initializers/sidekiq.rb, add following line
+
+```
+require 'sidekiq/enqueuer'
+```
+
 
 ## Usage
 
