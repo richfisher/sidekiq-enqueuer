@@ -6,6 +6,14 @@ module Sidekiq::Enqueuer::WebExtension
       def get_job_perform_params(klass_or_module)
         klass_or_module.instance_method(:perform).parameters.map{ |e| e[1]}
       end
+
+      def does_job_have_unlock_method(klass_or_module)
+        klass_or_module.respond_to?(:unlock!)
+      end
+
+      def get_job_unlock_params(klass_or_module)
+        klass_or_module.method(:unlock!).parameters.map{ |e| e[1]}
+      end
     end
 
     app.get "/enqueuer" do
@@ -21,6 +29,10 @@ module Sidekiq::Enqueuer::WebExtension
 
     app.post "/enqueuer" do
       klass = params[:job_class_name].constantize
+
+      if params['unlock-enable'] && params['unlock-enable'] != ''
+        Sidekiq::Enqueuer.unlock!(klass, params['unlock'].values)
+      end
 
       if params['submit'] == 'Enqueue'
         Sidekiq::Enqueuer.perform_async(klass, params['perform'].values)

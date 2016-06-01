@@ -58,6 +58,11 @@ module Sidekiq
       end
     end
 
+    def self.unlock!(klass, values)
+      parsed_values = values_parser(values)
+      klass.unlock!(*parsed_values)
+    end
+
     def self.values_parser(values)
       parsed_values = []
       errors = []

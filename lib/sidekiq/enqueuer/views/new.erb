@@ -8,16 +8,42 @@
 <form method="post" action="<%= root_path %>enqueuer">
 	<%= csrf_tag if respond_to?(:csrf_tag) %>
 	
-	<div class="form-group">
-		<label for="job_class_name">Job Class/Module</label>
-		<input class="form-control" name="job_class_name" value="<%= @klass %>" readonly=readonly /> 
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Perform</h3>
+		</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label for="job_class_name">Job Class/Module</label>
+				<input class="form-control" name="job_class_name" value="<%= @klass %>" readonly=readonly /> 
+			</div>
+
+			<% for param in get_job_perform_params(@klass) %>
+				<div class="form-group">
+					<label for="perform[<%= param %>]"><%= param %></label>
+					<input class="form-control" name="perform[<%= param %>]" /> 
+				</div>
+			<% end %>
+	  </div>
 	</div>
 
-	<% for param in get_job_perform_params(@klass) %>
-		<div class="form-group">
-			<label for="peform[<%= param %>]"><%= param %></label>
-			<input class="form-control" name="perform[<%= param %>]" /> 
-		</div>
+	<% if does_job_have_unlock_method(@klass) %>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<label for="unlock-enable">Unlock</label>
+					<input type="checkbox" name="unlock-enable" id="unlock-enable">
+				</h3>
+			</div>
+			<div class="panel-body">
+				<% for param in get_job_unlock_params(@klass) %>
+					<div class="form-group">
+						<label for="unlock[<%= param %>]"><%= param %></label>
+						<input class="form-control" name="unlock[<%= param %>]" /> 
+					</div>
+				<% end %>
+		  </div>
+		</div>	
 	<% end %>
 
 	<div class="form-group">
