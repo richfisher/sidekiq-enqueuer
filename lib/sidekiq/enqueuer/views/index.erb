@@ -13,7 +13,11 @@
 			<tr>
 				<td width="40%"><%= job %></td>
 				<td width="40%"><%= get_job_perform_params(job).join(', ') %></td>
-				<td width="20%"><a href="<%= root_path %>enqueuer/<%= job %>" class="btn btn-danger btn-xs" style="color: white;">Enqueue Form</a></td>
+				<td width="20%">
+					<button class="btn btn-danger btn-xs">
+						<a href="<%= root_path %>enqueuer/<%= job %>" style="color: white;">Enqueue Form</a>
+					</button>
+				</td>
 			</tr>
 		<% end %>
 	</tbody>
