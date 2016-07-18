@@ -29,17 +29,19 @@ module Sidekiq::Enqueuer::WebExtension
 
     app.post "/enqueuer" do
       klass = params[:job_class_name].constantize
+      key = params['unlock-enable'].nil? ? 'perform' : 'unlock'
+      job_parameters = params[key].nil? ? [] : params[key].values
 
       if params['unlock-enable'] && params['unlock-enable'] != ''
-        Sidekiq::Enqueuer.unlock!(klass, params['unlock'].values)
+        Sidekiq::Enqueuer.unlock!(klass, job_parameters)
       end
 
       if params['submit'] == 'Enqueue'
-        Sidekiq::Enqueuer.perform_async(klass, params['perform'].values)
+        Sidekiq::Enqueuer.perform_async(klass, job_parameters)
       end
 
       if params['submit'] == 'Schedule'
-        Sidekiq::Enqueuer.perform_in(klass, params['enqueue_in'], params['perform'].values)
+        Sidekiq::Enqueuer.perform_in(klass, params['enqueue_in'], job_parameters)
       end
 
       redirect "#{root_path}enqueuer"
