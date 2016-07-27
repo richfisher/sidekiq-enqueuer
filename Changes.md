@@ -1,6 +1,12 @@
 # Sidekiq Enqueuer Changes
 
+1.0.4
+-----------
+
+- Support for jobs without arguments 
+
+
 1.0.3
 -----------
 
-- support unlock! for sidekiq-middleware
+- Support unlock! for sidekiq-middleware
