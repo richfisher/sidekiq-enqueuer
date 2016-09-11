@@ -14,6 +14,10 @@ module Sidekiq::Enqueuer::WebExtension
       def get_job_unlock_params(klass_or_module)
         klass_or_module.method(:unlock!).parameters.map{ |e| e[1]}
       end
+
+      def get_params_by_name(name)
+        params[name].nil? ? [] : params[name].values
+      end
     end
 
     app.get "/enqueuer" do
@@ -29,19 +33,17 @@ module Sidekiq::Enqueuer::WebExtension
 
     app.post "/enqueuer" do
       klass = params[:job_class_name].constantize
-      key = params['unlock-enable'].nil? ? 'perform' : 'unlock'
-      job_parameters = params[key].nil? ? [] : params[key].values
 
       if params['unlock-enable'] && params['unlock-enable'] != ''
-        Sidekiq::Enqueuer.unlock!(klass, job_parameters)
+        Sidekiq::Enqueuer.unlock!(klass, get_params_by_name('unlock'))
       end
 
       if params['submit'] == 'Enqueue'
-        Sidekiq::Enqueuer.perform_async(klass, job_parameters)
+        Sidekiq::Enqueuer.perform_async(klass, get_params_by_name('perform'))
       end
 
       if params['submit'] == 'Schedule'
-        Sidekiq::Enqueuer.perform_in(klass, params['enqueue_in'], job_parameters)
+        Sidekiq::Enqueuer.perform_in(klass, params['enqueue_in'], get_params_by_name('perform'))
       end
 
       redirect "#{root_path}enqueuer"

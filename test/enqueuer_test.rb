@@ -9,8 +9,9 @@ module Sidekiq
 
     it "get_job_modules" do
       modules = Sidekiq::Enqueuer.get_job_modules
-      assert_equal 1, modules.size
+      assert_equal 2, modules.size
       assert_equal HardWorker, modules.first
+      assert_equal NoParamWorker, modules.last
     end
 
     it "get_job_classes" do

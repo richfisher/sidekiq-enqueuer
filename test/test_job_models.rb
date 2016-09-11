@@ -1,3 +1,9 @@
+class NoParamWorker
+  include Sidekiq::Worker
+  def perform
+  end  
+end
+
 class HardWorker
   include Sidekiq::Worker
   def perform(param1, param2)
