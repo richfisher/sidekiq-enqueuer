@@ -1,7 +1,7 @@
 class NoParamWorker
   include Sidekiq::Worker
   def perform
-  end  
+  end
 end
 
 class HardWorker
