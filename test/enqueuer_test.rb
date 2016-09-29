@@ -10,14 +10,24 @@ module Sidekiq
     it "get_job_modules" do
       modules = Sidekiq::Enqueuer.get_job_modules
       assert_equal 2, modules.size
-      assert_equal HardWorker, modules.first
-      assert_equal NoParamWorker, modules.last
+
+      assert_equal true, modules.include?(HardWorker)
+      assert_equal true, modules.include?(NoParamWorker)
     end
 
     it "get_job_classes" do
-      modules = Sidekiq::Enqueuer.get_job_classes
-      assert_equal 1, modules.size
-      assert_equal HardJob, modules.first
+      classes = Sidekiq::Enqueuer.get_job_classes
+      assert_equal 1, classes.size
+      assert_equal true, classes.include?(HardJob)
+      assert_equal false, classes.include?(NoParamWorker)
+    end
+
+    it '.get_jobs' do
+      jobs = Sidekiq::Enqueuer.get_jobs
+      assert_equal 3, jobs.size
+      assert_equal HardJob, jobs.first
+      assert_equal HardWorker, jobs.second
+      assert_equal NoParamWorker, jobs.last
     end
 
     it "is_job_class?" do
@@ -30,7 +40,7 @@ module Sidekiq
 
     it "perform_async, ActiveJob" do
       Sidekiq::Enqueuer.perform_async(HardJob, ['v1', 'v2'])
-     
+
       default_queue = Sidekiq::Queue.new(:default)
       assert_equal 1, default_queue.size
       assert_equal 'ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper', default_queue.first.klass
@@ -40,7 +50,7 @@ module Sidekiq
 
     it "perform_async, Sidkeiq::Worker" do
       Sidekiq::Enqueuer.perform_async(HardWorker, ['v1', 'v2'])
-     
+
       default_queue = Sidekiq::Queue.new(:default)
       assert_equal 1, default_queue.size
       assert_equal 'HardWorker', default_queue.first.klass
