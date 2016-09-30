@@ -7,18 +7,20 @@ module Sidekiq
   module Enqueuer
     def self.rails_eager_load
       if defined?(::Rails) && ::Rails.env != 'production'
-        ::Rails.application.eager_load! 
+        ::Rails.application.eager_load!
       end
     end
 
     def self.get_job_modules
-      ObjectSpace.each_object(Module).select { |klass| has_worker_module?(klass) }
-                                     .delete_if {|klass| klass.to_s =~ /^Sidekiq::Extensions/}
-                                     .delete_if {|klass| klass.to_s =~ /^ActiveJob::QueueAdapters/}
+      ObjectSpace.each_object(Module)
+                 .select { |klass| has_worker_module?(klass) }
+                 .delete_if { |klass| klass.to_s =~ /^Sidekiq::Extensions/ }
+                 .delete_if { |klass| klass.to_s =~ /^ActiveJob::QueueAdapters/ }
     end
 
     def self.get_job_classes
-      ObjectSpace.each_object(Class).select { |klass| is_job_class?(klass) }
+      ObjectSpace.each_object(Class)
+                 .select { |klass| is_job_class?(klass) }
     end
 
     def self.get_jobs
@@ -26,7 +28,8 @@ module Sidekiq
 
       rails_eager_load
       jobs = get_job_modules + get_job_classes
-      @jobs = jobs.map(&:to_s).uniq.map(&:constantize)
+      jobs = jobs.map(&:to_s).uniq.map(&:constantize)
+      @jobs = jobs.sort_by(&:name)
     end
 
     def self.is_job_class?(klass)
