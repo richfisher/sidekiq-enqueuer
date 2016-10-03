@@ -1,24 +1,26 @@
 <h3>Enqueuer</h3>
 
 <table class="table table-hover table-bordered table-striped table-white">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Params</th>
-			<th>Actions</th>
-		</tr>		
-	</thead>
-	<tbody>
-		<% for job in @jobs %>
-			<tr>
-				<td width="40%"><%= job %></td>
-				<td width="40%"><%= get_job_perform_params(job).join(', ') %></td>
-				<td width="20%">
-					<button class="btn btn-danger btn-xs">
-						<a href="<%= root_path %>enqueuer/<%= job %>" style="color: white;">Enqueue Form</a>
-					</button>
-				</td>
-			</tr>
-		<% end %>
-	</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Params</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @jobs.each do |job| %>
+      <tr>
+        <td width="40%"><%= job.name %></td>
+        <td width="40%"><%= job.params.map(&:name).join(', ') %></td>
+        <td width="20%">
+          <button class="btn btn-danger btn-xs">
+            <a href="<%= root_path %>enqueuer/<%= job.name %>" style="color: white;">
+              Enqueue Form
+            </a>
+          </button>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>

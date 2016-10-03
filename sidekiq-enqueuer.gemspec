@@ -26,10 +26,13 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  #spec.add_runtime_dependency('sidekiq', '> 4.1.2')
+
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rack-test"
   spec.add_development_dependency "sidekiq"
   spec.add_development_dependency "rails", '> 4.2'
   spec.add_development_dependency "sinatra"
+  spec.add_development_dependency 'mocha'
 end
