@@ -43,7 +43,7 @@ Use default sidekiq queue adapter for Jobs including Sidekiq::Worker or Jobs inh
 ```
 ActiveJob::Base.queue_adapter = :sidekiq
 ```
-![recommended here](https://github.com/mperham/sidekiq/wiki/Active-Job#active-job-setup)
+https://github.com/mperham/sidekiq/wiki/Active-Job#active-job-setup
 
 
 ### Jobs action param mapping.
