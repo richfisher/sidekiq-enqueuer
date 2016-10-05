@@ -76,7 +76,7 @@ module Sidekiq
 
               assert_equal 1, default_queue.size
               assert_equal 'HardWorker', default_queue.first.klass
-              assert_equal [['v1', 'v2']], default_queue.first.args
+              assert_equal ['v1', 'v2'], default_queue.first.args
             end
 
             it 'post form, enqueue a HardJob' do
@@ -90,7 +90,7 @@ module Sidekiq
               assert_equal 1, default_queue.size
               assert_equal 'ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper', default_queue.first.klass
               assert_equal 'HardJob', default_queue.first.args.first['job_class']
-              assert_equal [['v1','v2']], default_queue.first.args.first['arguments']
+              assert_equal ['v1', 'v2'], default_queue.first.args.first['arguments']
             end
           end
 
@@ -106,7 +106,7 @@ module Sidekiq
 
               assert_equal 1, ss.size
               assert_equal 'HardWorker', ss.first.klass
-              assert_equal [['v1', 'v2']], ss.first.args
+              assert_equal ['v1', 'v2'], ss.first.args
               assert_equal 120, (ss.first.at - Time.now).ceil
             end
 
@@ -121,7 +121,7 @@ module Sidekiq
 
               assert_equal 1, ss.size
               assert_equal 'ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper', ss.first.klass
-              assert_equal [['v1','v2']], ss.first.args.first['arguments']
+              assert_equal ['v1', 'v2'], ss.first.args.first['arguments']
               assert_equal 120, (ss.first.at - Time.now).ceil
             end
           end

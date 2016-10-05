@@ -14,9 +14,9 @@ module Sidekiq
 
         def enqueue
           if sidekiq_job?
-            Sidekiq::Client.enqueue_to(queue, job, args_with_values)
+            Sidekiq::Client.enqueue_to(queue, job, *args_with_values)
           elsif active_job?
-            return job.perform_later(args_with_values)
+            return job.perform_later(*args_with_values)
           else
             raise UnsupportedJobType
           end
@@ -24,9 +24,9 @@ module Sidekiq
 
         def enqueue_in(time_in_seconds)
           if sidekiq_job?
-            Sidekiq::Client.enqueue_to_in(queue, time_in_seconds, job, args_with_values)
+            Sidekiq::Client.enqueue_to_in(queue, time_in_seconds, job, *args_with_values)
           elsif active_job?
-            job.set(wait: time_in_seconds).perform_later(args_with_values)
+            job.set(wait: time_in_seconds).perform_later(*args_with_values)
           else
             raise UnsupportedJobType
           end
