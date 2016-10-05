@@ -1,4 +1,5 @@
 # Sidekiq::Enqueuer
+[![Build Status](https://travis-ci.org/vgarro/sidekiq-enqueuer.svg?branch=vg%2Fconfig-option-and-refactor)](https://travis-ci.org/vgarro/sidekiq-enqueuer)
 
 A Sidekiq Web extension to enqueue/schedule job in Web UI. Support both Sidekiq::Worker and ActiveJob.
 
