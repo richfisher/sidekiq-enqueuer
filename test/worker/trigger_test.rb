@@ -46,25 +46,12 @@ module Sidekiq
           end
 
           describe 'having an ActiveJob' do
-            let(:trigger) { Sidekiq::Enqueuer::Worker::Trigger.new(HardJob, []) }
-
             it 'returns true' do
-              mocked_method = MiniTest::Mock.new
-              mocked_method.expect :enqueue, true, []
-              hard_job = HardJob.new
-              hard_job.stub :perform_later, mocked_method do
-                hard_job.invoke_function("perform_later")
+              trigger = Sidekiq::Enqueuer::Worker::Trigger.new(HardJob, [])
+              HardJob.stub(:perform_later, true) do
+                assert_equal true, trigger.enqueue
               end
-              mocked_method.verify
             end
-
-            # it 'expects enqueue to be called' do
-            #   #obj = MiniTest::Mock.new
-            #   #obj.expect :right
-            #   trigger.stub(:perform_later, true) do
-            #     assert_equal true, trigger.enqueue
-            #   end
-            # end
           end
         end
 
@@ -83,8 +70,9 @@ module Sidekiq
             let(:trigger) { Sidekiq::Enqueuer::Worker::Trigger.new(HardJob, %w(test test2)) }
 
             it 'expects enqueue to be called' do
-              trigger.stub(:perform_later, true) do
-                assert_equal true, trigger.enqueue_in(1)
+              trigger = Sidekiq::Enqueuer::Worker::Trigger.new(HardJob, [])
+              HardJob.stub(:perform_later, true) do
+                assert_equal true, trigger.enqueue
               end
             end
           end
