@@ -79,17 +79,19 @@ module Sidekiq
               assert_equal [['v1', 'v2']], default_queue.first.args
             end
 
-            # it 'post form, enqueue a HardJob' do
-            #   default_queue = Sidekiq::Queue.new(:default)
+            it 'post form, enqueue a HardJob' do
+              default_queue = Sidekiq::Queue.new(:default)
 
-            #   post '/enqueuer', {job_class_name: 'HardJob', perform: {p1: 'v1', p2: 'v2'}, submit: 'Enqueue'}
-            #   last_response.status.must_equal 302
+              post '/enqueuer', job_class_name: 'HardJob',
+                                perform: { p1: 'v1', p2: 'v2' },
+                                submit: 'Enqueue'
+              last_response.status.must_equal 302
 
-            #   assert_equal 1, default_queue.size
-            #   assert_equal 'ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper', default_queue.first.klass
-            #   assert_equal 'HardJob', default_queue.first.args.first['job_class']
-            #   assert_equal [['v1','v2']], default_queue.first.args.first['arguments']
-            # end
+              assert_equal 1, default_queue.size
+              assert_equal 'ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper', default_queue.first.klass
+              assert_equal 'HardJob', default_queue.first.args.first['job_class']
+              assert_equal [['v1','v2']], default_queue.first.args.first['arguments']
+            end
           end
 
           describe 'post form, schedule jobs to the future' do
@@ -108,17 +110,20 @@ module Sidekiq
               assert_equal 120, (ss.first.at - Time.now).ceil
             end
 
-            # it 'post form, schedule a HardJob' do
-            #   ss = Sidekiq::ScheduledSet.new
+            it 'post form, schedule a HardJob' do
+              ss = Sidekiq::ScheduledSet.new
 
-            #   post '/enqueuer', {job_class_name: 'HardJob', perform: {p1: 'v1', p2: 'v2'}, enqueue_in: 120, submit: 'Schedule'}
-            #   last_response.status.must_equal 302
+              post '/enqueuer', job_class_name: 'HardJob',
+                               perform: { p1: 'v1', p2: 'v2' },
+                               enqueue_in: 120,
+                               submit: 'Schedule'
+              last_response.status.must_equal 302
 
-            #   assert_equal 1, ss.size
-            #   assert_equal 'ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper', ss.first.klass
-            #   assert_equal [['v1','v2']], ss.first.args.first['arguments']
-            #   assert_equal 120, (ss.first.at - Time.now).ceil
-            # end
+              assert_equal 1, ss.size
+              assert_equal 'ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper', ss.first.klass
+              assert_equal [['v1','v2']], ss.first.args.first['arguments']
+              assert_equal 120, (ss.first.at - Time.now).ceil
+            end
           end
         end
       end

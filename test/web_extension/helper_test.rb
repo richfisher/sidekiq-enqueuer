@@ -45,12 +45,12 @@ module Sidekiq
             end
           end
 
-          # describe 'providing a valid job' do
-          #   it 'returns the single instance of the Job to use' do
-          #     assert_instance_of Sidekiq::Enqueuer::Worker::Instance, helper.find_job_by_class_name(HardWorker)
-          #     assert_equal 'HardWorker', helper.find_job_by_class_name(HardWorker).name
-          #   end
-          # end
+          describe 'providing a valid job' do
+            it 'returns the single instance of the Job to use' do
+              assert_instance_of Sidekiq::Enqueuer::Worker::Instance, helper.find_job_by_class_name(HardWorker)
+              assert_equal 'HardWorker', helper.find_job_by_class_name(HardWorker).name
+            end
+          end
 
           describe 'providing an invalid job name' do
             it 'returns the single instance of the Job to use' do
