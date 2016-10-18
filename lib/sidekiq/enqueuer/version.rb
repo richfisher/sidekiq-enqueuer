@@ -1,5 +1,5 @@
 module Sidekiq
   module Enqueuer
-    VERSION = '1.0.6'
+    VERSION = '2.0.0.beta1'.freeze
   end
 end
