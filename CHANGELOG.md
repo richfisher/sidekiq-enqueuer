@@ -1,4 +1,9 @@
 # Sidekiq Enqueuer Changes
+2.0.0
+-----------
+
+- Version bump to stable after rollout to prod.
+
 
 2.0.0.beta
 -----------
