@@ -2,17 +2,22 @@ module Sidekiq
   module Enqueuer
     module Worker
       class Param
-        attr_reader :name, :condition
+        attr_reader :name, :label, :value
+        attr_accessor :value
 
         VALID_OPTIONS = { req: 'required', opt: 'optional' }.freeze
 
-        def initialize(name, condition)
+        def initialize(name, label)
           @name = name
-          @condition = VALID_OPTIONS[condition]
+          @label = VALID_OPTIONS[label]
         end
 
-        def label
-          condition
+        def required?
+          label == VALID_OPTIONS[:req]
+        end
+
+        def optional?
+          !required?
         end
       end
     end

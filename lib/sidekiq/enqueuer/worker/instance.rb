@@ -26,7 +26,7 @@ module Sidekiq
         private
 
         def trigger_job(input_params)
-          Trigger.new(job, input_params)
+          Sidekiq::Enqueuer::Worker::Trigger.new(job, input_params)
         end
 
         # TODO: what if two of this methods exist? which one to pick to figure out params?
@@ -38,7 +38,7 @@ module Sidekiq
         end
 
         def deduce_params
-          worker_params.empty? ? [] : worker_params.map { |e| Param.new(e[1], e[0]) }
+          worker_params.empty? ? [] : worker_params.map { |e| Sidekiq::Enqueuer::Worker::Param.new(e[1], e[0]) }
         end
 
         def worker_params
