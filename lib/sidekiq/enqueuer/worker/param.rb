@@ -2,7 +2,7 @@ module Sidekiq
   module Enqueuer
     module Worker
       class Param
-        attr_reader :name, :label, :value
+        attr_reader :name, :label
         attr_accessor :value
 
         VALID_OPTIONS = { req: 'required', opt: 'optional' }.freeze

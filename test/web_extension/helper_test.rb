@@ -10,23 +10,25 @@ module Sidekiq
           include Sidekiq::Enqueuer::WebExtension::Helper
 
           def params
-            { 'post' => { 'user_id' => '{ param1: value1, param2: value2 }',
-                          'optional_param' => 'testing' } }
+            { 'post' => { 'required_param' => 'value1',
+                          'optional_param' => 'testing',
+                          'optional_param2' => 'testing2' } }
           end
         end
 
         let(:helper) { TestHelperClass.new }
+        let(:worker) { Sidekiq::Enqueuer::Worker::Instance.new(WorkerWithOptionalParams, false) }
 
         describe '.get_params_by_action' do
           describe 'having valid params for the required action' do
             it 'returns a list of values passed as parameters' do
-              assert_equal %w(value1 value2 testing), helper.get_params_by_action('post')
+              assert_equal %w(value1 testing testing2), helper.get_params_by_action('post', worker)
             end
           end
 
           describe 'providing invalid action params' do
             it 'returns a list of values passed as parameters' do
-              assert_empty helper.get_params_by_action('none')
+              assert_empty helper.get_params_by_action('none', worker)
             end
           end
         end

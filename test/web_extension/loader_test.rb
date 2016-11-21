@@ -70,7 +70,7 @@ module Sidekiq
               default_queue = Sidekiq::Queue.new
 
               post '/enqueuer', job_class_name: 'HardWorker',
-                                perform: { p1: 'v1', p2: 'v2' },
+                                perform: { param1: 'v1', param2: 'v2' },
                                 submit: 'Enqueue'
               last_response.status.must_equal 302
 
@@ -83,7 +83,7 @@ module Sidekiq
               default_queue = Sidekiq::Queue.new(:default)
 
               post '/enqueuer', job_class_name: 'HardJob',
-                                perform: { p1: 'v1', p2: 'v2' },
+                                perform: { param1: 'v1', param2: 'v2' },
                                 submit: 'Enqueue'
               last_response.status.must_equal 302
 
@@ -99,7 +99,7 @@ module Sidekiq
               ss = Sidekiq::ScheduledSet.new
 
               post '/enqueuer', job_class_name: 'HardWorker',
-                                perform: { p1: 'v1', p2: 'v2' },
+                                perform: { param1: 'v1', param2: 'v2' },
                                 enqueue_in: 120,
                                 submit: 'Schedule'
               last_response.status.must_equal 302
@@ -114,7 +114,7 @@ module Sidekiq
               ss = Sidekiq::ScheduledSet.new
 
               post '/enqueuer', job_class_name: 'HardJob',
-                               perform: { p1: 'v1', p2: 'v2' },
+                               perform: { param1: 'v1', param2: 'v2' },
                                enqueue_in: 120,
                                submit: 'Schedule'
               last_response.status.must_equal 302

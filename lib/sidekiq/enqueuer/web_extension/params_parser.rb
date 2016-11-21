@@ -13,7 +13,7 @@ module Sidekiq
 
         def process
           worker.params.each do |expected_param|
-            value = extract_value(expected_param.name)
+            value = extract_value(expected_param.name.to_s)
             expected_param.value = value
             raise NoProvidedValueForRequiredParam if expected_param.required? && !expected_param.value.present?
           end
@@ -24,23 +24,13 @@ module Sidekiq
 
         def extract_value(param_name)
           return nil unless raw_params[param_name].present?
-          value = raw_params[param_name]
-
-          hash?(value) ? convert_to_ruby(value) : cleanup(value)
+          cleanup(raw_params[param_name])
         end
 
         def cleanup(value)
           return nil if value.to_s.downcase == 'nil'
           return '' if value.to_s.strip.empty?
           value
-        end
-
-        def convert_to_ruby(value)
-          YAML.parse(value.to_s.strip).to_ruby
-        end
-
-        def hash?(value)
-          value.to_s.start_with?('{') && value.to_s.end_with?('}')
         end
       end
     end

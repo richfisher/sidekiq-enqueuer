@@ -4,7 +4,7 @@ module Sidekiq
       module Helper
         def get_params_by_action(name, job)
           return [] if params[name].nil?
-          ParamsParser.new(params[name], job).process
+          Sidekiq::Enqueuer::WebExtension::ParamsParser.new(params[name], job).process
         end
 
         def find_job_by_class_name(job_class_name)

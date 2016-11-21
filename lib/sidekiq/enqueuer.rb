@@ -12,8 +12,6 @@ require 'sidekiq/enqueuer/railtie' if defined? ::Rails::Railtie
 module Sidekiq
   module Enqueuer
     class << self
-      attr_accessor :configuration
-
       def configuration
         @configuration ||= Configuration.new
       end
