@@ -75,14 +75,9 @@ For ActiveJob, enqueing is being done calling the very own `perform_later` insta
 ![list](https://cloud.githubusercontent.com/assets/830633/14494297/c9b01b10-01bc-11e6-8ef5-a4d29ff45fb3.png)
 
 * Fill the form, click Enqueue or Schedule.
-![form](https://cloud.githubusercontent.com/assets/830633/14494314/ddd9f8ae-01bc-11e6-86ce-0641a9c4d3e4.png)
+![form](https://cloud.githubusercontent.com/assets/830633/20659706/e8dde182-b50a-11e6-90e6-022d5c1ae2db.png)
 
 * That is it!
-
-## Form filling
-* Support string value and hash value. Value will be stripped.
-* Start with { will be parsed by YAML as hash, eg: {k1: v1, k2: v2} to {'k1'=> 'v1', 'k2'=> 'v2'}
-
 
 ## Contributing
 
