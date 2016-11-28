@@ -18,12 +18,9 @@ module Sidekiq
 
           app.post '/enqueuer' do
             job = find_job_by_class_name(params[:job_class_name])
-            requested_params = get_params_by_action('perform')
-            # TODO: Figure out the need of unlock!
-            # if params['unlock-enable'] && params['unlock-enable'] != ''
-            #   Sidekiq::Enqueuer.unlock!(klass, get_params_by_action('unlock'))
-            # end
+
             if job
+              requested_params = get_params_by_action('perform', job)
               job.trigger(requested_params) if params['submit'] == 'Enqueue'
               job.trigger_in(params['enqueue_in'], requested_params) if params['submit'] == 'Schedule'
             end

@@ -39,3 +39,12 @@ class WorkerWithDefinedQueue
   def perform
   end
 end
+
+class WorkerWithOptionalParams
+  include Sidekiq::Worker
+
+  sidekiq_options queue: :custom_queue
+
+  def perform(required_param, optional_param = nil, optional_param2 = nil)
+  end
+end

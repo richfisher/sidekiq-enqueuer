@@ -14,9 +14,8 @@ module Sidekiq
               assert_equal 'userId', param.name
             end
 
-            it 'expects a correct condition assignment' do
-              assert_equal 'required', param.condition
-            end
+            it { assert_equal true, param.required? }
+            it { assert_equal false, param.optional? }
           end
 
           describe 'having optional param' do
@@ -26,9 +25,8 @@ module Sidekiq
               assert_equal 'userId', param.name
             end
 
-            it 'expects a correct condition assignment' do
-              assert_equal 'optional', param.condition
-            end
+            it { assert_equal false, param.required? }
+            it { assert_equal true, param.optional? }
           end
         end
 
