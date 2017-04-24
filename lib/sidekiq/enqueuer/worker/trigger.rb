@@ -43,7 +43,7 @@ module Sidekiq
         end
 
         def active_job?
-          job.superclass == ::ActiveJob::Base
+          job <= ::ActiveJob::Base
         end
       end
     end
