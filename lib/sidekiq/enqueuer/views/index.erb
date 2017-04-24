@@ -14,11 +14,9 @@
         <td width="40%"><%= job.name %></td>
         <td width="40%"><%= job.params.map(&:name).join(', ') %></td>
         <td width="20%">
-          <button class="btn btn-danger btn-xs">
-            <a href="<%= root_path %>enqueuer/<%= job.name %>" style="color: white;">
-              Enqueue Form
-            </a>
-          </button>
+          <a class="btn btn-danger btn-xs" href="<%= root_path %>enqueuer/<%= job.name %>" style="color: white;">
+            Enqueue Form
+          </a>
         </td>
       </tr>
     <% end %>
