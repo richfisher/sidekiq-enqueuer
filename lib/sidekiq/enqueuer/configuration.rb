@@ -29,7 +29,7 @@ module Sidekiq
         rails_eager_load
         all_jobs = []
         all_jobs << sidekiq_jobs
-        all_jobs << active_jobs
+        all_jobs << active_jobs if defined?(::ActiveJob)
         all_jobs = all_jobs.flatten
         all_jobs.delete_if { |klass| IGNORED_CLASSES.include?(klass.to_s) }
       end
@@ -44,7 +44,7 @@ module Sidekiq
 
       # Load all classes from the included application before selecting Jobs from it
       def rails_eager_load
-        ::Rails.application.eager_load! if defined?(::Rails) && !::Rails.env.production?
+        ::Rails.application.eager_load! if defined?(::Rails) && ::Rails.respond_to?(:env) && !::Rails.env.production?
       end
     end
   end
