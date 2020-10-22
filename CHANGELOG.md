@@ -1,4 +1,16 @@
 # Sidekiq Enqueuer Changes
+2.2.0
+-----------
+
+- Possibility to pass jobs as string/symbol literals to avoid const resolving at initialize step.
+- Set up the project up to maintain good code quality.
+- Minor refactoring.
+
+2.1.0
+-----------
+
+- Minor patches & improvements.
+
 2.0.0
 -----------
 
@@ -15,9 +27,9 @@
 2.0.0.beta
 -----------
 
-- Added configutation option: Provides a list of Jobs to display
+- Added configuration option: Provides a list of Jobs to display
 - Dropped support for manual 'unlock'
-- Sidekiq enqueing now uses `Sidekiq::Client.enqueue_to / enqueue_to_in` to a custom queue.
+- Sidekiq enqueuing now uses `Sidekiq::Client.enqueue_to / enqueue_to_in` to a custom queue.
 - Refactor on classes and modules to bring Atomicity
 
 

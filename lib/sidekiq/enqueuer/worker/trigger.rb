@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Sidekiq
   module Enqueuer
     module Worker
@@ -13,37 +15,39 @@ module Sidekiq
         end
 
         def enqueue
-          if sidekiq_job?
+          case
+          when sidekiq_job?
             Sidekiq::Client.enqueue_to(queue, job, *args_with_values)
-          elsif active_job?
-            return job.perform_later(*args_with_values)
+          when active_job?
+            job.perform_later(*args_with_values)
           else
-            raise UnsupportedJobType
+            raise UnsupportedJobType, "Unsupported job type: #{job}"
           end
         end
 
         def enqueue_in(time_in_seconds)
-          if sidekiq_job?
+          case
+          when sidekiq_job?
             Sidekiq::Client.enqueue_to_in(queue, time_in_seconds, job, *args_with_values)
-          elsif active_job?
+          when active_job?
             job.set(wait: time_in_seconds).perform_later(*args_with_values)
           else
-            raise UnsupportedJobType
+            raise UnsupportedJobType, "Unsupported job type: #{job}"
           end
         end
 
         private
 
         def deduce_queue
-          job.respond_to?(:sidekiq_options) ? job.sidekiq_options['queue'].to_s : 'default'
+          job.respond_to?(:sidekiq_options) ? job.sidekiq_options["queue"].to_s : "default"
         end
 
         def sidekiq_job?
-          job.included_modules.include? ::Sidekiq::Worker
+          Sidekiq::Enqueuer::Utils.sidekiq_job?(job)
         end
 
         def active_job?
-          job <= ::ActiveJob::Base
+          Sidekiq::Enqueuer::Utils.active_job?(job)
         end
       end
     end

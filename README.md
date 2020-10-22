@@ -8,29 +8,33 @@ A Sidekiq Web extension to enqueue/schedule job in Web UI. Support both Sidekiq:
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'sidekiq-enqueuer'
+gem "sidekiq-enqueuer"
 ```
 
 And then execute:
 
-    $ bundle
-
+```bash
+$ bundle
+```
 
 Edit config/initializers/sidekiq.rb, add following line
 
-```
-require 'sidekiq/enqueuer'
+```ruby
+require "sidekiq/enqueuer"
 ```
 
 Optionally, provide a list of Jobs to display on the new tab, on a new initializer file.
-Worry not, when no configuration is provided, All jobs will be displayed
+Worry not, when no configuration is provided, all jobs will be displayed.
 
-```
-# config/initializers/sidekiq_enqueuer_config.rb
-require 'sidekiq/enqueuer'
+```ruby
+# config/initializers/sidekiq_enqueuer.rb
+require "sidekiq/enqueuer"
 
 Sidekiq::Enqueuer.configure do |config|
-  config.jobs = [MyAwesomeJob1, MyModule::MyAwesomeJob2]
+  # string/symbol literals are used to when you prefer not to resolve job constants
+  config.jobs = %w[MyAwesomeJob1 MyModule::MyAwesomeJob2]
+  # you can use constants array as well 
+  # config.jobs = [MyAwesomeJob1, MyModule::MyAwesomeJob2]
 end
 
 ```
@@ -39,10 +43,13 @@ end
 ## Notes:
 
 ### Queuing & ActiveJob support
-Use default sidekiq queue adapter for Jobs including Sidekiq::Worker or Jobs inheriting from ActiveJob::base
+Use default sidekiq queue adapter for Jobs including Sidekiq::Worker or Jobs inheriting from ActiveJob::base.
 
-```
-ActiveJob::Base.queue_adapter = :sidekiq
+```ruby
+class Application < Rails::Application
+  # ...
+  config.active_job.queue_adapter = :sidekiq
+end
 ```
 https://github.com/mperham/sidekiq/wiki/Active-Job#active-job-setup
 
@@ -53,11 +60,9 @@ It is important those actions (either of them) won't hide the actual params into
 In that case it will be impossible to infer the params for your method.
 
 Want to verify this last line? Run this in a rails console:
-```
+```ruby
 MyJob.instance_method(:perform).parameters            # change :perform for your implemented method
->> [[:req, :param1], [:opt, :param2], [:opt, :param3]]   # Good output
-
-=> [[:rest, :args], [:block, :block]]   # Bad output. Params are being wrapped into a super class.
+# => [[:req, :param1], [:opt, :param2], [:opt, :param3]]   # Good output => [[:rest, :args], [:block, :block]]   # Bad output. Params are being wrapped into a super class.
 ```
 
 ### Enqueuing Jobs:
@@ -68,7 +73,7 @@ For ActiveJob, enqueing is being done calling the very own `perform_later` insta
 
 ## Usage
 
-* Open Sidekiq Web, click the Enqueuer tab.
+* Open Sidekiq Web, click the `Enqueuer` tab.
 
 * You can see a list of job classes/modules and params. Click Enqueue Form.
 
@@ -81,5 +86,5 @@ For ActiveJob, enqueing is being done calling the very own `perform_later` insta
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/richfisher/sidekiq-enqueuer.
+Bug reports and pull requests are welcome on GitHub at https://github.com/basherru/sidekiq-enqueuer.
 

@@ -1,7 +1,35 @@
 language: ruby
-rvm:
-  - 2.2.2
-before_install: gem install bundler -v 1.10.6
 
-services:
-  - redis-server
+os: linux
+dist: xenial
+
+jobs:
+  fast_finish: true
+  include:
+    - rvm: 2.4
+    - rvm: 2.5
+    - rvm: 2.6
+    - rvm: 2.7
+    - rvm: ruby-head
+  allow_failures:
+    - rvm: ruby-head
+
+cache: bundler
+
+before_install: gem install bundler
+
+install: bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}
+
+script:
+  - bundle exec rspec
+  - bundle exec rubocop
+
+deploy:
+  provider: rubygems
+  api_key:
+    secure: cwFaLzVdRiYWvNkIAEL+1EduaxdSmuBeJNQ/EikaiUIXyW6FesepZfRTlfFd/hmK3XlcWwm1QVAzPR/RtNASHGhO+52LWInryqdfVeg0xqqijMEYMLipNf5boprgpqL1uh8ADs8jMSWmgtgXXTveHTg9WWrcQ7FYDVJ8QCxKPTeXUIL1O+0YLT2vKoRCD47yoAxu3mz1Ok6dk2Z3RjZVDPqbKrqUnj4EStrppKdWcapG04gq8vzrMVfuu6ek3ijJRsQui9GZNPSoRO3EIoHu9EtmC/s5JTmFQGJZv/xJPVQGmOFLVgXAS7R/id5VDIH9Kv/5jWFYzE7LD3bzUBPZ8GcNSsmjHGuIbdJr87e9m/B+SnAd/SI3hV80Mfq0MJpx8UArcbXPu+oa/oFxoN79hGo8fjMIjRtOBQYmkLr50VvYXUD2Kn7mBEgFWekPPuXbAvL5cHN1PNo1vYJC5PcEeZRow7yx1LS35VAsE0WLAQrnOH1kMc+neFnddDV8v0GXDsqOiWbrJDvDzNH/tjiQcEKhJkab5f7eGRoCLV3SCisijzTyRdzL9ijlrwCo3U1JGkimS+ToTOiWorAOtwxaYLnqKSrIHY0SJ3rVChZtVkOcaHBe1PgW5glD22C1X1fpiuH/jpGrTC986zlyCop7GBoILK+Cz/pNNcoWapglaW0=
+  gemspec: sidekiq-enqueuer.gemspec
+  on:
+    repo: basherru/sidekiq-enqueuer
+    branch: master
+    rvm: 2.7

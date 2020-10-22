@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Sidekiq
   module Enqueuer
     module Worker
@@ -5,7 +7,7 @@ module Sidekiq
         attr_reader :name, :label
         attr_accessor :value
 
-        VALID_OPTIONS = { req: 'required', opt: 'optional' }.freeze
+        VALID_OPTIONS = { req: "required", opt: "optional" }.freeze
 
         def initialize(name, label)
           @name = name
