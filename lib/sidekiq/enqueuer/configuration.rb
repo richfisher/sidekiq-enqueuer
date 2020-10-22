@@ -53,11 +53,15 @@ module Sidekiq
       end
 
       def sidekiq_jobs
-        ObjectSpace.each_object(Class).select { |job| Sidekiq::Enqueuer::Utils.sidekiq_job?(job) }
+        ObjectSpace.each_object(Class).select do |job|
+          ::Sidekiq::Enqueuer::Utils.sidekiq_job?(job)
+        end
       end
 
       def active_jobs
-        ObjectSpace.each_object(Class).select { |job| Sidekiq::Enqueuer::Utils.active_job?(job) }
+        ObjectSpace.each_object(Class).select do |job|
+          ::Sidekiq::Enqueuer::Utils.active_job?(job)
+        end
       end
 
       # Load all classes from the included application before selecting Jobs from it
