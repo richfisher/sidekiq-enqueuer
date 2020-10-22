@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 require "sidekiq/web"
-require "sidekiq/enqueuer/version"
 require "sidekiq/enqueuer/configuration"
+require "sidekiq/enqueuer/utils"
+require "sidekiq/enqueuer/version"
 require "sidekiq/enqueuer/worker/instance"
 require "sidekiq/enqueuer/worker/param"
 require "sidekiq/enqueuer/worker/trigger"
-require "sidekiq/enqueuer/web_extension/loader"
 require "sidekiq/enqueuer/web_extension/helper"
+require "sidekiq/enqueuer/web_extension/loader"
 require "sidekiq/enqueuer/web_extension/params_parser"
 
 module Sidekiq
