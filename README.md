@@ -75,7 +75,7 @@ For ActiveJob, enqueing is being done calling the very own `perform_later` insta
 
 * Open Sidekiq Web, click the `Enqueuer` tab.
 
-* You can see a list of job classes/modules and params. Click Enqueue Form.
+* You can see a list of job classes/modules and params. Click Enqueue.
 
 ![list](https://cloud.githubusercontent.com/assets/830633/14494297/c9b01b10-01bc-11e6-8ef5-a4d29ff45fb3.png)
 
