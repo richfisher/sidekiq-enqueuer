@@ -6,9 +6,9 @@ module Sidekiq
 
         attr_reader :job, :queue, :args_with_values
 
-        def initialize(job, input_param_hash)
+        def initialize(job, input_param_hash, queue)
           @job = job
-          @queue = deduce_queue
+          @queue = queue
           @args_with_values = input_param_hash
         end
 
@@ -33,10 +33,6 @@ module Sidekiq
         end
 
         private
-
-        def deduce_queue
-          job.respond_to?(:sidekiq_options) ? job.sidekiq_options['queue'].to_s : 'default'
-        end
 
         def sidekiq_job?
           job.included_modules.include? ::Sidekiq::Worker

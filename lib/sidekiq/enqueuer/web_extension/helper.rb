@@ -12,6 +12,16 @@ module Sidekiq
             job_klass.job == job_class_name || job_klass.job.to_s == job_class_name || job_klass.name == job_class_name
           end
         end
+
+        def deduce_queue(enqueuer_worker_instance)
+
+          if enqueuer_worker_instance&.job.present?
+            enqueuer_worker_instance.job.sidekiq_options['queue']&.to_s
+          else
+            'default'
+          end
+        end
+
       end
     end
   end
