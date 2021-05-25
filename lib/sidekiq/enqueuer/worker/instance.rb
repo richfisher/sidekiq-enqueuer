@@ -11,12 +11,12 @@ module Sidekiq
           @params              = deduce_params
         end
 
-        def trigger(input_params)
-          trigger_job(input_params).enqueue
+        def trigger(input_params, queue)
+          trigger_job(input_params, queue).enqueue
         end
 
-        def trigger_in(seconds, input_params)
-          trigger_job(input_params).enqueue_in(seconds.to_s.to_i.seconds)
+        def trigger_in(seconds, input_params, queue)
+          trigger_job(input_params, queue).enqueue_in(seconds.to_s.to_i.seconds)
         end
 
         def name
@@ -25,8 +25,8 @@ module Sidekiq
 
         private
 
-        def trigger_job(input_params)
-          Sidekiq::Enqueuer::Worker::Trigger.new(job, input_params)
+        def trigger_job(input_params, queue)
+          Sidekiq::Enqueuer::Worker::Trigger.new(job, input_params, queue)
         end
 
         # TODO: what if two of this methods exist? which one to pick to figure out params?
@@ -42,7 +42,7 @@ module Sidekiq
         end
 
         def worker_params
-          job.instance_method(instance_method).parameters
+          instance_method.present? ? job.instance_method(instance_method).parameters : []          
         end
       end
     end

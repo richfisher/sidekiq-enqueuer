@@ -23,7 +23,10 @@ module Sidekiq
       def all_jobs
         included_jobs = defined?(@all_jobs) ? @all_jobs : configuration.all_jobs
         included_jobs.each_with_object([]) do |job_klass, acc|
-          acc << Worker::Instance.new(job_klass, configuration.enqueue_using_async)
+          worker = Worker::Instance.new(job_klass, configuration.enqueue_using_async)
+          if worker.instance_method.present?
+            acc << worker
+          end
         end
       end
     end

@@ -13,16 +13,16 @@ module Sidekiq
 
           app.get '/enqueuer/:job_class_name' do
             @job = find_job_by_class_name(params[:job_class_name])
+            @job_default_queue = deduce_queue(@job)
             render(:erb, File.read(File.join(view_path, 'new.erb')))
           end
 
           app.post '/enqueuer' do
             job = find_job_by_class_name(params[:job_class_name])
-
             if job
               requested_params = get_params_by_action('perform', job)
-              job.trigger(requested_params) if params['submit'] == 'Enqueue'
-              job.trigger_in(params['enqueue_in'], requested_params) if params['submit'] == 'Schedule'
+              job.trigger(requested_params, params['job_queue']) if params['submit'] == 'Enqueue'
+              job.trigger_in(params['enqueue_in'], requested_params, params['job_queue']) if params['submit'] == 'Schedule'
             end
             redirect "#{root_path}enqueuer"
           end

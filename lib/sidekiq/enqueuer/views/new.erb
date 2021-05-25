@@ -20,6 +20,12 @@
           <input class="form-control" name="perform[<%= param.name %>]" />
         </div>
       <% end %>
+
+      <div class="form-group">
+        <label for="job_queue">Queue</label>
+        <input class="form-control" name="job_queue" value="<%= @job_default_queue %>" />
+      </div>
+
     </div>
   </div>
 
