@@ -42,7 +42,7 @@ module Sidekiq
         end
 
         def worker_params
-          job.instance_method(instance_method).parameters
+          instance_method.present? ? job.instance_method(instance_method).parameters : []          
         end
       end
     end
